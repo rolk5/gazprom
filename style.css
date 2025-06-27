@@ -1,0 +1,377 @@
+
+/* Основные стили */
+:root {
+    --primary: #2c3e50;
+    --secondary: #3498db;
+    --workCode: #4b4b4b;
+    --light: #ecf0f1;
+    --dark: #34495e;
+    --success: #2ecc71;
+    --warning: #f39c12;
+    --gray: #7f8c8d;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Montserrat", sans-serif;
+    margin: 0% 20%;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #f5f7fa;
+    color: #333;
+    user-select: none;
+}
+
+
+/* Шапка приложения */
+.app-header {
+    text-align: center;
+    padding: 20px;
+
+    color: var(--primary);
+    border-radius: 10px;
+}
+
+.app-header h1 {
+    font-size: 2.2rem;
+    margin-bottom: 10px;
+}
+
+.app-header p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Основной контейнер */
+.container {
+    display: flex;
+    flex: 1;
+    gap: 30px;
+}
+
+/* Панель навигации */
+#nav-container {
+    width: 300px;
+    position: sticky;
+    top: 20px;
+    height: fit-content;
+    max-height: 100vh;
+    overflow-y: auto;
+    background: white;
+    border-radius: 6px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    flex-shrink: 0;
+}
+
+.nav-header {
+    padding: 18px;
+    background: var(--primary);
+    color: white;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    font-weight: bold;
+    font-size: 1.2rem;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.nav-list {
+    padding: 10px 0;
+}
+
+.nav-item {
+    padding: 10px 10px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    font-size: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-h {
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.nav-p {
+    font-size: 0.7rem;
+}
+
+.nav-u {
+    font-size: 0.7rem;
+    border-radius: 5px;
+    width: fit-content;
+    background-color: #2c3e5011;
+    color: #0055aa;
+    font-style: italic;
+
+}
+
+.nav-item:hover {
+    background-color: #e3f2fd;
+    transform: translateX(5px);
+}
+
+.nav-item.active {
+    background-color: #d1e9ff;
+    color: var(--primary);
+    font-weight: 600;
+    border-left: 4px solid var(--secondary);
+}
+
+
+
+/* Контентная область */
+#content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+/* Карточка ЭСН */
+.work-card {
+    background: white;
+    border-radius: 10px;
+    padding: 25px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+}
+
+
+
+.work-header {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #f0f4f8;
+
+}
+
+.work-title {
+    font-size: 1.3rem;
+    color: var(--dark);
+    flex: 1;
+    min-width: 300px;
+    user-select:text;
+}
+
+
+.workTypeHeader{
+    font-size:1rem;
+    font-weight: 500;
+    background-color: #f5f5f5;
+    width: fit-content;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.work-meta {
+    display: flex;
+    gap: 15px;
+    align-items: flex-end;
+    flex-direction: column;
+}
+
+.work-code {
+    background: #f5f5f5;
+    color: rgb(13, 80, 180);
+    padding: 8px 15px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 1.5rem;
+    white-space: nowrap;
+}
+
+.work-unit {
+    background: #ffffffa6;
+    color: #9c9c9c;
+    padding: 8px 15px;
+    border-radius: 10px;
+    font-style: italic;
+    /* offset-x | offset-y | blur-radius | spread-radius | color */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);;
+}
+
+/* Вкладки ресурсов */
+.resource-tabs {
+    margin: 10px 0px 20px 0px;
+    display: flex;
+    flex-wrap: wrap;
+    border-bottom: 2px dashed #f0f4f8;
+    padding-bottom: 10px;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+    animation: fadeIn 0.4s ease;
+}
+
+
+
+/* Таблицы ресурсов */
+.resource-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    
+}
+
+.resource-table th {
+    background-color: #f5f5f5;
+    padding: 8px 16px;
+    text-align: left;
+    font-weight: 600;
+    color: var(--primary);
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.resource-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #edf2f7;
+}
+
+.resource-table tr:last-child td {
+    border-bottom: none;
+}
+
+.resource-table tr:hover {
+    background-color: #f8fdff;
+}
+
+.resource-table .resource-name {
+    font-weight: 500;
+}
+
+.resource-table .resource-value {
+    font-weight: 600;
+    color: var(--primary);
+}
+
+/* Индикаторы загрузки и ошибок */
+.loader {
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid var(--secondary);
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1.5s linear infinite;
+    margin: 50px auto;
+}
+
+
+
+.error {
+    color: #d32f2f;
+    padding: 30px;
+    background: #ffebee;
+    border-radius: 10px;
+    margin: 20px 0;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.error h3 {
+    margin-bottom: 15px;
+}
+
+.error ul {
+    text-align: left;
+    max-width: 500px;
+    margin: 20px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    list-style-position: inside;
+}
+
+.error li {
+    margin-bottom: 8px;
+}
+
+
+/* Подвал */
+footer {
+    text-align: center;
+    padding: 25px;
+    margin-top: 30px;
+    color: var(--gray);
+    font-size: 0.9rem;
+    border-top: 1px solid #e0e6ed;
+}
+
+/* Адаптивность */
+@media (max-width: 900px) {
+    .container {
+        flex-direction: column;
+    }
+    
+    #nav-container {
+        width: 100%;
+        position: relative;
+        top: 0;
+        max-height: 300px;
+    }
+    
+    .work-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .work-meta {
+        width: 100%;
+        justify-content: space-between;
+    }
+}
+
+@media (max-width: 600px) {
+    body {
+        padding: 15px;
+    }
+    
+    .work-card {
+        padding: 20px;
+    }
+    
+    .work-title {
+        font-size: 1.3rem;
+        min-width: auto;
+    }
+    
+    .work-code, .work-unit {
+        font-size: 0.9rem;
+        padding: 6px 12px;
+    }
+    
+    .resource-table th, 
+    .resource-table td {
+        padding: 10px 12px;
+        font-size: 0.9rem;
+    }
+    
+    .tab-btn {
+        padding: 8px 15px;
+        font-size: 0.9rem;
+    }
+}
