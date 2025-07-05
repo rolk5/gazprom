@@ -314,12 +314,15 @@ body {
 
 /* Подвал */
 footer {
+    background-color: #f5f7fa;
+    position: sticky;
+    bottom: 0px;
     text-align: center;
-    padding: 25px;
-    margin-top: 30px;
+    padding: 15px;
     color: var(--gray);
     font-size: 0.9rem;
     border-top: 1px solid #e0e6ed;
+    user-select: text;
 }
 
 /* Адаптивность */
