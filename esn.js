@@ -4,7 +4,7 @@ async function loadData() {
         document.getElementById('loader').style.display = 'block';
         document.getElementById('error-message').style.display = 'none';
         
-        const response = await fetch('https://raw.githubusercontent.com/rolk5/gazprom/refs/heads/main/esnEnd.json');
+        const response = await fetch('esnEnd.json');
 
         if (!response.ok) {
             throw new Error(`Ошибка загрузки: ${response.status} ${response.statusText}`);
