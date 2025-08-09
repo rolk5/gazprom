@@ -1,117 +1,64 @@
+document.addEventListener('DOMContentLoaded', loadData);
 
 async function loadData() {
+    const loader = document.getElementById('loader');
+    const errorMessage = document.getElementById('error-message');
+    loader.style.display = 'block';
+    errorMessage.style.display = 'none';
+
     try {
-        document.getElementById('loader').style.display = 'block';
-        document.getElementById('error-message').style.display = 'none';
-        
-        const response = await fetch('esnEnd.json');
+        const response = await fetch('https://rolk5.github.io/gazprom/esnEnd.json');
 
         if (!response.ok) {
             throw new Error(`Ошибка загрузки: ${response.status} ${response.statusText}`);
         }
 
         const data = await response.json();
+        loader.style.display = 'none';
 
-        document.getElementById('loader').style.display = 'none';
-
-        generateNavigation(data.ЭСН);
-        generateContent(data.ЭСН);
-
-
+        const works = data.ЭСН || [];
+        generateNavigation(works);
+        generateContent(works);
 
     } catch (error) {
-
-        document.getElementById('loader').style.display = 'none';
-        const errorMessage = document.getElementById('error-message');
+        loader.style.display = 'none';
         errorMessage.style.display = 'block';
         errorMessage.innerHTML = `
             <h3>Ошибка загрузки данных</h3>
             <p>${error.message}</p>
-            <p>Проверьте:</p>
         `;
         console.error('Ошибка загрузки данных:', error);
     }
 }
 
-
 function generateNavigation(works) {
-    let navHTML = '';
-
-    works.forEach(work => {
-
-        const anchor = work['Шифр ЭСН'];
-
-
-        navHTML += `
-            <div class="nav-item" 
-                 data-target="${anchor}" 
-                 onclick="scrollToWork('${anchor}')">
-                <p class = "nav-h">${work['Шифр ЭСН']}</p>
-                <p class = "nav-u">${work['Ед']}</p>
-                <p class = "nav-p">${work.Работа}</p>
-            </div>
-        `;
-    });
-
-
+    const navHTML = works.map(work => `
+        <div class="nav-item" data-target="${work['Шифр ЭСН']}" onclick="scrollToWork('${work['Шифр ЭСН']}')">
+            <p class="nav-h">${work['Шифр ЭСН']}</p>
+            <p class="nav-u">${work['Ед']}</p>
+            <p class="nav-p">${work.Работа}</p>
+        </div>
+    `).join('');
     document.getElementById('nav-list').innerHTML = navHTML;
 }
 
-
 function generateContent(works) {
-    let contentHTML = '';
-
-    works.forEach(work => {
-
+    const contentHTML = works.map(work => {
         const anchor = work['Шифр ЭСН'];
-
 
         const resourceSections = [
             'Трудозатраты', 'Материалы', 'Машины',
             'Расход оборудования', 'Капитальный ремонт'
-        ].filter(section => work[section] && work[section].length > 0);
+        ].filter(section => Array.isArray(work[section]) && work[section].length > 0);
 
-
-        let tabsHTML = '';
-        let tabContentHTML = '';
-
-
-
-
-        resourceSections.forEach((section, index) => {
-
-
-            function emojyAdd(section) {
-                if (section == "Трудозатраты") {
-                    return section = "👷Трудозатраты"
-                }
-                else if (section == "Машины") {
-                    return section = "🏗Машины"
-                }
-                else if (section == "Материалы") {
-                    return section = "🔩Материалы"
-                }
-                else if (section == "Расход оборудования") {
-                    return section = "🚜Расход оборудования"
-                }
-                else if (section == "Капитальный ремонт") {
-                    return section = "🛠Капитальный ремонт"
-                }
-            };
-
-
-            tabContentHTML += `
-            <p class = "workTypeHeader">${emojyAdd(section)}</p>    
+        const tabContentHTML = resourceSections.map(section => `
+            <p class="workTypeHeader">${emojiForSection(section)}</p>
             <div class="resource-tabs">
-              ${generateResourceTable(work[section])}
+                ${generateResourceTable(work[section])}
             </div>
-            `;
-        });
+        `).join('');
 
-
-
-
-        contentHTML += `
+        return `
             <div id="${anchor}" class="work-card">
                 <div class="work-header">
                     <h2 class="work-title">${work.Работа}</h2>
@@ -120,36 +67,27 @@ function generateContent(works) {
                         <div class="work-unit">${work.Ед}</div>
                     </div>
                 </div>
-
                 ${tabContentHTML}
             </div>
         `;
-    });
-
+    }).join('');
 
     document.getElementById('content').innerHTML = contentHTML;
 }
 
-
 function generateResourceTable(resources) {
-
     if (!resources || resources.length === 0) {
         return '<p>Нет данных для отображения</p>';
     }
 
-
-    let rowsHTML = '';
-    resources.forEach(resource => {
-        rowsHTML += `
-            <tr>
-                <td class="resource-name">${resource.Наименование}</td>
-                <td>${resource['Ед. изм.'] || '-'}</td>
-                <td class="resource-value">${resource['Ресурс на ед. изм.']}</td>
-                <td>${resource.Шифр || '-'}</td>
-            </tr>
-        `;
-    });
-
+    const rowsHTML = resources.map(resource => `
+        <tr>
+            <td class="resource-name">${resource.Наименование}</td>
+            <td>${resource['Ед. изм.'] || '-'}</td>
+            <td class="resource-value">${resource['Ресурс на ед. изм.']}</td>
+            <td>${resource.Шифр || '-'}</td>
+        </tr>
+    `).join('');
 
     return `
         <table class="resource-table">
@@ -161,65 +99,30 @@ function generateResourceTable(resources) {
                     <th>Шифр</th>
                 </tr>
             </thead>
-            <tbody>
-                ${rowsHTML}
-            </tbody>
+            <tbody>${rowsHTML}</tbody>
         </table>
     `;
 }
 
-
-function switchTab(button, tabId) {
-
-    const tabsContainer = button.closest('.resource-tabs');
-
-
-    tabsContainer.querySelectorAll('.tab-btn').forEach(btn => {
-        btn.classList.remove('active');
-    });
-
-
-    button.classList.add('active');
-
-
-    const contentContainer = tabsContainer.nextElementSibling;
-
-
-    contentContainer.querySelectorAll('.tab-content').forEach(content => {
-        content.classList.remove('active');
-    });
-
-
-    document.getElementById(tabId).classList.add('active');
+function emojiForSection(section) {
+    const emojiMap = {
+        "Трудозатраты": "👷Трудозатраты",
+        "Машины": "🏗Машины",
+        "Материалы": "🔩Материалы",
+        "Расход оборудования": "🚜Расход оборудования",
+        "Капитальный ремонт": "🛠Капитальный ремонт"
+    };
+    return emojiMap[section] || section;
 }
-
 
 function scrollToWork(anchor) {
     const element = document.getElementById(anchor);
     if (element) {
-
-        document.querySelectorAll('.highlight').forEach(el => {
-            el.classList.remove('highlight');
-        });
-
-
+        document.querySelectorAll('.highlight').forEach(el => el.classList.remove('highlight'));
         element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-
         element.classList.add('highlight');
 
-
-        document.querySelectorAll('.nav-item').forEach(item => {
-            item.classList.remove('active');
-        });
+        document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
         document.querySelector(`.nav-item[data-target="${anchor}"]`).classList.add('active');
     }
 }
-
-
-window.switchTab = switchTab;
-window.scrollToWork = scrollToWork;
-
-
-document.addEventListener('DOMContentLoaded', loadData);
-
