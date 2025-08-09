@@ -5,46 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ЭСН Справочник</title>
     <link rel="stylesheet" href="style.css">
-
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&display=swap');
     </style>
-    
-    
 </head>
 <body>
 
-    <header class="app-header">
-        <h1>ЭСН Справочник</h1>
-    </header>
-    
-    <div class="container">
+<header class="app-header">
+    <h1>ЭСН Справочник</h1>
+</header>
 
-        <div id="nav-container">
-            <div class="nav-header">Каталог</div>
-            <div id="nav-list" class="nav-list">
+<div class="container">
 
-            </div>
-        </div>
-        
-
-        <div id="content">
-
-            <div id="loader" class="loader"></div>
-            
-
-            <div id="error-message" class="error" style="display:none;"></div>
-            
-
+    <div id="nav-container">
+        <div class="nav-header">Каталог</div>
+        <div id="nav-list" class="nav-list">
+            <p>Загрузка меню...</p>
         </div>
     </div>
-    
-    <footer>
-        <p>Система просмотра данных ЭСН Газпром | Разработка <a href="https://t.me/arvimage">Роман Волков</a></p>
-    </footer>
 
+    <div id="content">
+        <div id="loader" class="loader"></div>
+        <div id="error-message" class="error" style="display:none;"></div>
+    </div>
 
+</div>
 
-    <script src="esn.js"></script>
+<footer>
+    <p>Система просмотра данных ЭСН Газпром | Разработка <a href="https://t.me/arvimage">Роман Волков</a></p>
+</footer>
+
+<script src="esn.js" defer></script>
+
 </body>
 </html>
