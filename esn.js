@@ -5,7 +5,7 @@ async function loadData() {
     errorMessage.style.display = 'none';
 
 
-    const jsonUrl = 'https://rolk5.github.io/gazprom/esnEnd.json';
+    const jsonUrl = 'https://rolk5.github.io/gazprom/esnEnd_miny.json';
 
     try {
         const controller = new AbortController();
